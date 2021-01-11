@@ -10,10 +10,10 @@ fun createDeck () = (* creates deck using tail recursion *)
 		[] => acc
 	      | hd::tl => createSet(s', tl, (s',hd)::acc)
     in
-	 createSet( Clubs,    v, 
-	 createSet( Diamonds, v,
-         createSet( Hearts,   v,
-	 createSet( Spades,   v, [] ) ) ) )
+	createSet( Clubs,    v, 
+	createSet( Diamonds, v,
+        createSet( Hearts,   v,
+	createSet( Spades,   v, [] ) ) ) )
     end 
 
 val Deck = createDeck()
