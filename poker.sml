@@ -112,12 +112,14 @@ fun add_high_cards (cards,pattern,pL) = (* adding high cards if hand pattern isn
 		      then add_high_cards(tl,pattern,pL)
 		      else add_high_cards(tl,hd::pattern,pL+1)
 
-fun remove_patterns (pattern,cards) = (* removing cards is only realy useful for two pair and full house, I think its a better way than having slide_window becoming more complex*)
+fun remove_patterns (pattern,cards) = 
+(* removing cards is only realy useful for two pair and full house, I think its a better way than having slide_window becoming more complex*)
     case pattern of
 	[] => cards
       | hd::tl => remove_patterns(tl, (List.filter (fn x => x <> hd) cards)) 
 				 
-fun run (cards) = (* creates the two cards lists and then defines all hand functions, then has a switch statement to return the cards list used, hand name and hand pattern *)
+fun run (cards) = 
+(* creates the two cards lists and then defines all hand functions, then has a switch statement to return the cards list used, hand name and hand pattern *)
     let
         val s_cards = sort_s cards
 	val v_cards = sort_v cards
