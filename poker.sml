@@ -10,10 +10,10 @@ fun createDeck () = (* creates deck using tail recursion *)
 		[] => acc
 	      | hd::tl => createSet(s', tl, (s',hd)::acc)
     in
-	 createSet( Clubs, v, 
+	 createSet( Clubs,    v, 
 	 createSet( Diamonds, v,
-         createSet( Hearts, v,
-	 createSet( Spades, v, [] ) ) ) )
+         createSet( Hearts,   v,
+	 createSet( Spades,   v, [] ) ) ) )
     end 
 
 val Deck = createDeck()
@@ -72,10 +72,10 @@ fun sort_s clist = ListMergeSort.sort compareS clist (* sort by suite Spades -> 
 fun sort_v clist = ListMergeSort.sort compareV clist (* sort by value Ace -> Num 2 *)
 
 (* functions for finding patterns *)
-fun s_check ((s1,_), (s2,_)) = s1 = s2
+fun s_check ((s1,_), (s2,_))   = s1 = s2
 fun v_check_d ((_,v1) ,(_,v2)) = (num_value(v1) - 1) = num_value(v2)
 fun v_check_e ((_,v1) ,(_,v2)) = num_value(v1) = num_value(v2)
-fun a_check ((s1,v1),(s2,v2)) = (s1=s2) andalso ((num_value(v1)-1)=num_value(v2)) (* could have made with s_check and v_check_d but it was just as verbose *)
+fun a_check ((s1,v1),(s2,v2))  = (s1=s2) andalso ((num_value(v1)-1)=num_value(v2)) (* could have made with s_check and v_check_d but it was just as verbose *)
 			       
 fun sliding_window (cards, interval, f) = (* pretty much all hands in poker can be found using a sliding window type search *)
     let
@@ -124,33 +124,33 @@ fun run (cards) = (* creates the two cards lists and then defines all hand funct
 
 (*1*)	fun straight_flush () = sliding_window (s_cards,5,a_check) (*can be used for RF hd = Num 10*)
 					       
-(*2*)	fun four_kind () = case sliding_window (v_cards,4,v_check_e) of
-			       SOME result => SOME (add_high_cards(v_cards, result, 4))
-			     | NONE => NONE
+(*2*)	fun four_kind ()      = case sliding_window (v_cards,4,v_check_e) of
+			            SOME result => SOME (add_high_cards(v_cards, result, 4))
+			          | NONE => NONE
 	    
-(*4*)	fun flush () = sliding_window (s_cards,5,s_check)
+(*4*)	fun flush ()          = sliding_window (s_cards,5,s_check)
 				      
-(*5*)	fun straight () = sliding_window (v_cards,5,v_check_d)
+(*5*)	fun straight ()       = sliding_window (v_cards,5,v_check_d)
 					 
-(*6*)	fun three_kind () = case sliding_window (v_cards,3,v_check_e) of
-			        SOME result => SOME (add_high_cards(v_cards, result, 3))
-			      | NONE => NONE
+(*6*)	fun three_kind ()     = case sliding_window (v_cards,3,v_check_e) of
+			            SOME result => SOME (add_high_cards(v_cards, result, 3))
+			          | NONE => NONE
 					    
-(*7*)	fun two_pair () = case sliding_window (v_cards,2,v_check_e) of 
-	                      SOME result => (case sliding_window(remove_patterns(result,v_cards),2,v_check_e) of 
-						  SOME r => SOME (add_high_cards(v_cards,result@r,4))
-						| NONE => NONE)
-			    | NONE => NONE 
+(*7*)	fun two_pair ()       = case sliding_window (v_cards,2,v_check_e) of 
+	                            SOME result => (case sliding_window(remove_patterns(result,v_cards),2,v_check_e) of 
+						        SOME r => SOME (add_high_cards(v_cards,result@r,4))
+						      | NONE => NONE)
+		          	  | NONE => NONE 
 							      
-(*8*)	fun pair () = case sliding_window (v_cards,2,v_check_e) of
-			  SOME result => SOME (add_high_cards(v_cards, result, 2))
-			| NONE => NONE
+(*8*)	fun pair ()           = case sliding_window (v_cards,2,v_check_e) of
+			            SOME result => SOME (add_high_cards(v_cards, result, 2))
+			          | NONE => NONE
 
-(*3*)	fun full_house () = case sliding_window(v_cards,3,v_check_e) of
-			        SOME result => (case sliding_window(remove_patterns(result,v_cards),2,v_check_e) of
-						   SOME r => SOME (result@r)
-						 | NONE => NONE)
-			      | NONE => NONE
+(*3*)	fun full_house ()     = case sliding_window(v_cards,3,v_check_e) of
+			            SOME result => (case sliding_window(remove_patterns(result,v_cards),2,v_check_e) of
+						        SOME r => SOME (result@r)
+						      | NONE => NONE)
+			          | NONE => NONE
 							       
 							       
 (*9*)	fun high_cards () = add_high_cards(v_cards,[],0)	  
