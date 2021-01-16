@@ -153,8 +153,7 @@ fun run (cards) =
 						        SOME r => SOME (result@r)
 						      | NONE => NONE)
 			          | NONE => NONE
-							       
-							       
+							       							       
 (*9*)	fun high_cards () = add_high_cards(v_cards,[],0)	  
     in
 	case straight_flush() of
